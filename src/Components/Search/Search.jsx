@@ -2,16 +2,15 @@ import React, {useState} from "react";
 
 const Search = (props) => {
    
-  const [title, setTitle] = useState('');
+  const [term, setTerm] = useState("");
 
-  const onSearchChanged = event => {
-    const _title = title;
-    setTitle({ title: title });
-    console.log(_title)
+  const handleChange = event => {
+    setTerm(event.target.value);
+    
   };
   const onSubmit = event => {
     event.preventDefault();
-    props.onSearch(title);
+    props.onSearch(term);
   };
   
     return (
@@ -22,8 +21,8 @@ const Search = (props) => {
             <input
               id="video-search"
               type="text"
-              value={title}
-              onChange={(event) => onSearchChanged(event.target.value)}
+              value={term}
+              onChange={handleChange}
               placeholder="Enter Keyword"
             />
           </div>
