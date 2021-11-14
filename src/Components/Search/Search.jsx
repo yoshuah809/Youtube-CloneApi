@@ -1,34 +1,36 @@
-import React from "react";
+import React, {useState} from "react";
 
-class Search extends React.Component {
-  state = { title: "" };
-  onSearchChanged = event => {
-    const _title = event.target.value;
-    this.setState({ title: _title });
+const Search = (props) => {
+   
+  const [title, setTitle] = useState('');
+
+  const onSearchChanged = event => {
+    const _title = title;
+    setTitle({ title: title });
     console.log(_title)
   };
-  onSubmit = event => {
+  const onSubmit = event => {
     event.preventDefault();
-    this.props.onSearch(this.state.title);
+    props.onSearch(title);
   };
-  render() {
+  
     return (
       <>
-        <form onSubmit={this.onSubmit} className="search-form">
+        <form onSubmit={onSubmit} className="search-form">
           <div className="form-controls">
             <label>Search</label>
             <input
               id="video-search"
               type="text"
-              value={this.state.title}
-              onChange={this.onSearchChanged}
+              value={title}
+              onChange={(event) => onSearchChanged(event.target.value)}
               placeholder="Enter Keyword"
             />
           </div>
         </form>
       </>
     );
-  }
+  
 }
 
 export default Search;
