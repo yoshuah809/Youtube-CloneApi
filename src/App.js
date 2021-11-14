@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import "./App.css";
 import Search from './Components/Search/Search'
 import youtubeApi from "./Components/Api//Youtube"
@@ -6,18 +6,17 @@ import VideoList from "./Components/VideoList/VideoList"
 import VideoPlayer from "./Components/VideoPlayer/VideoPlayer"
 
 
-export default class App extends React.Component {
+const App =()=> {
 
-  state = {
-      videosMetaInfo: [],
-      selectedVideoId: null
-    };
+  const [videosMetaInfo, setVideosMetaInfo] = useState([]);
+  const [selectedVideoId, setSelectedVideoId] = useState(null)
+   
 
-    onVideoSelected = videoId => {
-      this.setState({selectedVideoId: videoId})
+    const onVideoSelected = videoId => {
+      setSelectedVideoId(videoId)
     }
 
-    onSearch = async keyword => {
+    const onSearch = async keyword => {
       const response = await youtubeApi.get("/search", {
         params: {
           q: keyword
@@ -25,22 +24,22 @@ export default class App extends React.Component {
         
       });
       //console.log(response)
-      this.setState({
-        videosMetaInfo: response.data.items,
-        selectedVideoId: response.data.items[0].id.videoId
-      });
-      console.log(this.state);
+      setVideosMetaInfo(response.data.items,
+        setSelectedVideoId(response.data.items[0].id.videoId)
+      )
+      //console.log(this.state);
     };
   
-   render() {
+  
       return (
         <div className="App">
-          <Search onSearch={this.onSearch} />
-          <VideoList onVideoSelected ={this.onVideoSelected} data={this.state.videosMetaInfo}/>
-          <VideoPlayer videoId = {this.state.selectedVideoId}/>
+          <Search onSearch={onSearch} />
+          <VideoList onVideoSelected ={onVideoSelected} data={videosMetaInfo}/>
+          <VideoPlayer videoId = {selectedVideoId}/>
         </div>
       );
-    }
-  }
   
+}
+
+export default App;
 
